@@ -2,6 +2,8 @@
 
 My Kubernetes/CKAD learning track — lessons toward the CKAD (Certified Kubernetes Application Developer) certification.
 
+![Learning path preview](assets/screenshots/index-preview.png)
+
 ## Structure
 
 - `MISSION.md` — the "why," success criteria, and constraints for this learning track
