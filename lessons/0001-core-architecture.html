@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Lesson 1: Kubernetes Core Architecture</title>
+<link rel="stylesheet" href="../assets/style.css" />
+<style>
+  .split {
+    display: flex;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+  }
+  .split-box {
+    flex: 1;
+    min-width: 240px;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 1rem 1.1rem;
+  }
+  .split-box h3 { margin-top: 0; }
+  .split-box.control { border-top: 4px solid var(--accent); }
+  .split-box.node { border-top: 4px solid var(--good); }
+</style>
+</head>
+<body>
+
+<p class="lesson-kicker"><a href="../index.html">&larr; Learning Path</a> &middot; Lesson 1 &middot; Core Architecture</p>
+<h1>Control Plane vs Node</h1>
+
+<p>Every CKAD task you'll eventually do &mdash; and every architecture question an interviewer asks &mdash; assumes you know this split. It's the one diagram to have fully internalized before anything else clicks.</p>
+
+<nav class="toc" data-toc>
+  <div class="toc-title">On this page</div>
+</nav>
+
+<div class="callout">
+  <div class="callout-title">Primary source</div>
+  Read <a href="https://kubernetes.io/docs/concepts/overview/components/">Kubernetes Components</a> (official docs, ~5 min). For a narrated walkthrough, TechWorld with Nana's <a href="https://www.youtube.com/watch?v=X48VuDVv0do">Kubernetes Tutorial for Beginners</a> covers the same split visually in its first 15 minutes.
+</div>
+
+<h2 id="the-split">The split</h2>
+<p>A Kubernetes cluster has two kinds of machines. The <strong>control plane</strong> makes global decisions about the cluster (scheduling, detecting failures) but runs none of your application code. <strong>Nodes</strong> are where your containers actually run.</p>
+
+<div class="split">
+  <div class="split-box control">
+    <h3>Control plane</h3>
+    <p><strong>kube-apiserver</strong> &mdash; the front door. Every read/write, including every <code>kubectl</code> command, goes through it.</p>
+    <p><strong>etcd</strong> &mdash; key-value store holding all cluster state. The single source of truth.</p>
+    <p><strong>kube-scheduler</strong> &mdash; watches for new unscheduled Pods and picks which node they run on.</p>
+    <p><strong>kube-controller-manager</strong> &mdash; runs the control loops that notice "actual state &ne; desired state" and fix it.</p>
+  </div>
+  <div class="split-box node">
+    <h3>Node</h3>
+    <p><strong>kubelet</strong> &mdash; the agent on each node. Talks to the API server, makes sure the containers described for its Pods are actually running.</p>
+    <p><strong>kube-proxy</strong> &mdash; maintains network rules so a Service's traffic reaches the right Pods.</p>
+    <p><strong>Container runtime</strong> &mdash; the software that actually starts/stops containers (e.g. containerd).</p>
+  </div>
+</div>
+
+<p>In <strong>minikube</strong>, both roles run on the one VM you start &mdash; but they're still logically separate, and <code>kubectl</code> always talks to the control plane, never directly to a node.</p>
+
+<h2 id="the-loop">The one idea underneath everything</h2>
+<blockquote>You declare desired state &rarr; a controller notices a gap between desired and actual &rarr; the scheduler places any new Pods &rarr; the kubelet on the target node makes it real &rarr; controllers keep checking, forever.</blockquote>
+<p>This is <strong>declarative reconciliation</strong>. Deployments, self-healing, autoscaling &mdash; all of it is this same loop applied to different resources. When you're stuck debugging later, "which part of this loop is broken?" is usually the right first question.</p>
+
+<h2 id="the-pod">The Pod, briefly</h2>
+<p>The <strong>Pod</strong> is the smallest deployable unit: one or more containers that share a network namespace (same IP; they can reach each other over <code>localhost</code>) and can share storage volumes. You'll almost never create a bare Pod in practice &mdash; a controller like a Deployment manages Pods on your behalf. That's the next lesson.</p>
+
+<p class="citation">Full breakdown: <a href="../reference/architecture.html">Reference: Kubernetes Architecture</a>.</p>
+
+<h2 id="retrieval-check">Retrieval check</h2>
+<p>No peeking at the tables above. One word each.</p>
+
+<div class="quiz" data-questions='[{"q":"Which component is the cluster&#39;s single source of truth, storing all state as key-value pairs?","a":"etcd"},{"q":"Which node-level agent talks to the API server and keeps its Pods&#39; containers running?","a":"kubelet"},{"q":"Which control-plane component decides which node a new Pod runs on?","a":"scheduler"},{"q":"Which node-level component maintains the network rules so a Service reaches the right Pods?","a":"kube-proxy"}]'></div>
+
+<div class="ask-agent">
+  Stuck on anything above, or want a deeper dive on one component? Ask your agent &mdash; that's what the session is for.
+</div>
+
+<div class="lesson-nav">
+  <span><a href="../index.html">&larr; Learning Path</a></span>
+  <span>Next: Pods &amp; the container runtime (coming up)</span>
+</div>
+
+<script src="../assets/toc.js"></script>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

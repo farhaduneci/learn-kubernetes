@@ -1,0 +1,232 @@
+/* Shared stylesheet for the Kubernetes teaching workspace. Tufte-ish: generous
+   whitespace, serif prose, restrained color, sidenotes for citations. Dark mode by default. */
+
+:root {
+  --ink: #e7e4dd;
+  --paper: #14171a;
+  --paper-raised: #1b1f23;
+  --muted: #9a9992;
+  --rule: #33383d;
+  --accent: #6fa8dc;
+  --accent-soft: #1c2b38;
+  --good: #6fbf73;
+  --bad: #e08076;
+  --code-bg: #1e2226;
+  --max-width: 680px;
+}
+
+* { box-sizing: border-box; }
+
+html { font-size: 18px; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  line-height: 1.55;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 3rem 1.5rem 6rem;
+}
+
+h1, h2, h3 {
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+h1 {
+  font-size: 1.9rem;
+  margin: 0 0 0.25rem;
+}
+
+.lesson-kicker {
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin: 0 0 0.75rem;
+}
+
+h2 {
+  font-size: 1.25rem;
+  margin: 2.5rem 0 0.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+  scroll-margin-top: 1.5rem;
+}
+
+h3 {
+  font-size: 1.05rem;
+  margin: 1.5rem 0 0.5rem;
+}
+
+p { margin: 0.9rem 0; }
+
+a { color: var(--accent); text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+
+code, pre {
+  font-family: "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.85em;
+  background: var(--code-bg);
+  color: var(--ink);
+  border-radius: 4px;
+}
+
+code { padding: 0.1em 0.35em; }
+
+pre {
+  padding: 0.9rem 1rem;
+  overflow-x: auto;
+  line-height: 1.5;
+  border: 1px solid var(--rule);
+}
+pre code { padding: 0; background: none; border: none; }
+
+blockquote {
+  margin: 1rem 0;
+  padding: 0.1rem 1rem;
+  border-left: 3px solid var(--accent);
+  color: var(--muted);
+  font-style: italic;
+}
+
+.citation {
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.callout {
+  background: var(--accent-soft);
+  border-radius: 8px;
+  padding: 0.9rem 1.1rem;
+  margin: 1.25rem 0;
+  font-size: 0.95rem;
+}
+
+.callout-title {
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  margin-bottom: 0.35rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.92rem;
+}
+th, td {
+  text-align: left;
+  padding: 0.5rem 0.6rem;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+th {
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+}
+
+.lesson-nav {
+  display: flex;
+  justify-content: space-between;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.85rem;
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+  color: var(--muted);
+}
+
+.ask-agent {
+  margin-top: 3rem;
+  padding: 1rem 1.1rem;
+  border: 1px dashed var(--rule);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+hr.rule {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 2rem 0;
+}
+
+/* Table of contents, used on lessons/reference pages */
+.toc {
+  background: var(--paper-raised);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 0.9rem 1.2rem;
+  margin: 1.5rem 0 2rem;
+}
+.toc-title {
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+.toc ol {
+  margin: 0;
+  padding-left: 1.2rem;
+  font-size: 0.92rem;
+}
+.toc li { margin: 0.25rem 0; }
+.toc a { color: var(--ink); text-decoration: none; }
+.toc a:hover { color: var(--accent); text-decoration: underline; }
+
+/* Quiz component: question box, text input, feedback */
+.quiz-item {
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 1rem 1.1rem;
+  margin: 1rem 0;
+}
+.quiz-q { font-weight: 600; margin-top: 0; }
+.quiz-input {
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 0.4rem 0.6rem;
+  width: 100%;
+  max-width: 320px;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  background: var(--code-bg);
+  color: var(--ink);
+}
+.quiz-input::placeholder { color: var(--muted); }
+.quiz-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.quiz-feedback { font-size: 0.88rem; min-height: 1.2em; margin-bottom: 0; }
+
+/* Generic buttons, used by quiz component and elsewhere */
+.btn {
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.82rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: 5px;
+  border: 1px solid var(--rule);
+  background: var(--code-bg);
+  color: var(--ink);
+  cursor: pointer;
+  margin-right: 0.4rem;
+}
+.btn:hover { border-color: var(--accent); }

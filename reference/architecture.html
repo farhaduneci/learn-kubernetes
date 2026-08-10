@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Reference: Kubernetes Architecture</title>
+<link rel="stylesheet" href="../assets/style.css" />
+<style>
+  body { max-width: 720px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  @media print { .grid { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+
+<p class="lesson-kicker"><a href="../index.html">&larr; Learning Path</a> &middot; Reference &middot; Quick Lookup</p>
+<h1>Kubernetes Architecture</h1>
+<p class="citation">Compressed from <a href="../lessons/0001-core-architecture.html">Lesson 1</a>. Source of truth: <a href="https://kubernetes.io/docs/concepts/overview/components/">kubernetes.io &mdash; Kubernetes Components</a>.</p>
+
+<nav class="toc" data-toc>
+  <div class="toc-title">On this page</div>
+</nav>
+
+<h2 id="the-split">The split</h2>
+<p>A cluster is one or more <strong>control plane</strong> machines making global decisions, plus one or more <strong>nodes</strong> running the actual workloads. In minikube both roles live on one VM/container, but the roles are logically distinct.</p>
+
+<div class="grid">
+<div>
+<h3>Control plane</h3>
+<table>
+<tr><th>Component</th><th>Job</th></tr>
+<tr><td><code>kube-apiserver</code></td><td>Front door. All reads/writes (incl. <code>kubectl</code>) go through it.</td></tr>
+<tr><td><code>etcd</code></td><td>Key-value store; the cluster's single source of truth.</td></tr>
+<tr><td><code>kube-scheduler</code></td><td>Assigns new Pods to a node based on resources/constraints.</td></tr>
+<tr><td><code>kube-controller-manager</code></td><td>Runs control loops that reconcile actual state &rarr; desired state.</td></tr>
+</table>
+</div>
+
+<div>
+<h3>Node</h3>
+<table>
+<tr><th>Component</th><th>Job</th></tr>
+<tr><td><code>kubelet</code></td><td>Agent per node; ensures containers in its Pods are running &amp; healthy.</td></tr>
+<tr><td><code>kube-proxy</code></td><td>Maintains network rules so Services route to the right Pods.</td></tr>
+<tr><td>Container runtime</td><td>Actually runs containers (e.g. containerd).</td></tr>
+</table>
+</div>
+</div>
+
+<h2 id="the-core-loop">The core loop</h2>
+<blockquote>You declare desired state (via the API server) &rarr; controllers notice a gap &rarr; scheduler places new Pods &rarr; kubelet on the target node makes it real &rarr; controllers keep checking, forever.</blockquote>
+<p>This <strong>declarative reconciliation loop</strong> is the single idea underneath almost everything in Kubernetes: Deployments, Services, autoscaling, self-healing.</p>
+
+<h2 id="the-pod">Pod, in one line</h2>
+<p>The <strong>Pod</strong> is the smallest deployable unit &mdash; one or more containers that share a network namespace (same IP, localhost between them) and can share storage volumes. You almost never manage a Pod directly; a controller (e.g. Deployment) manages Pods for you.</p>
+
+<h2 id="glossary-anchors">Glossary anchors</h2>
+<table>
+<tr><td><strong>Control loop</strong></td><td>A controller's watch &rarr; compare &rarr; act cycle that drives actual state toward desired state.</td></tr>
+<tr><td><strong>Desired state</strong></td><td>What you declared (in a manifest); Kubernetes continuously works to make actual state match it.</td></tr>
+<tr><td><strong>Node</strong></td><td>A worker machine (VM or physical) that runs Pods.</td></tr>
+</table>
+
+<div class="lesson-nav">
+  <span><a href="../index.html">&larr; Learning Path</a></span>
+  <span><a href="../lessons/0001-core-architecture.html">Lesson 1: Control Plane vs Node</a></span>
+</div>
+
+<script src="../assets/toc.js"></script>
+</body>
+</html>
