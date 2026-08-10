@@ -1,6 +1,6 @@
-# learn-kubernetes
+# Learn Kubernetes
 
-Personal Kubernetes/CKAD learning track — lessons, quizzes, and reference notes, built toward the **CKAD (Certified Kubernetes Application Developer)** certification.
+My Kubernetes/CKAD learning track — lessons toward the CKAD (Certified Kubernetes Application Developer) certification.
 
 ## Structure
 
