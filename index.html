@@ -3,6 +3,15 @@
 <head>
 <meta charset="UTF-8" />
 <title>Kubernetes Learning Path</title>
+<script>
+(function () {
+  try {
+    if (localStorage.getItem("theme") === "light") {
+      document.documentElement.setAttribute("data-theme", "light");
+    }
+  } catch (e) {}
+})();
+</script>
 <link rel="stylesheet" href="assets/style.css" />
 <style>
   .path {
@@ -64,6 +73,8 @@
 </style>
 </head>
 <body>
+
+<button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme">🌙</button>
 
 <p class="lesson-kicker">Teaching Workspace</p>
 <h1>Kubernetes Learning Path</h1>
@@ -129,5 +140,6 @@
   renderReferences(window.REFERENCES, document.getElementById("reference-list"));
 </script>
 <script src="assets/toc.js"></script>
+<script src="assets/theme.js"></script>
 </body>
 </html>
