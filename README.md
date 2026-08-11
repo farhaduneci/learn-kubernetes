@@ -17,3 +17,5 @@ My Kubernetes/CKAD learning track — lessons toward the CKAD (Certified Kuberne
 ## Approach
 
 Curriculum follows the [CNCF CKAD domain breakdown](https://github.com/cncf/curriculum/tree/master/ckad). Practice stays local — no cloud spend: **minikube** for Kubernetes, **LocalStack** for AWS fundamentals (EKS context) taught just-in-time. See `MISSION.md` for full scope and constraints.
+
+This repo is built using [mattpocock/skills](https://github.com/mattpocock/skills).
