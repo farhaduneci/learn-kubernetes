@@ -1,0 +1,9 @@
+{
+  "name": "learn-kubernetes",
+  "private": true,
+  "scripts": {
+    "dev": "npx npm-run-all --parallel dev:server dev:open",
+    "dev:server": "npx --package=serve -- serve -l 8000 .",
+    "dev:open": "npx wait-on tcp:8000 && open http://localhost:8000"
+  }
+}
