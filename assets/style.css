@@ -7,7 +7,10 @@
   src: url("fonts/InterVariable.woff2") format("woff2-variations"), url("fonts/InterVariable.woff2") format("woff2");
   font-weight: 100 900;
   font-style: normal;
-  font-display: swap;
+  /* optional (not swap): either the font is ready before first paint — the
+     head <link rel="preload"> gives it a head start — or the page renders
+     once with the fallback and never swaps mid-read. No visible refont/pop. */
+  font-display: optional;
 }
 
 :root {
@@ -381,6 +384,28 @@ hr.rule {
   transition: opacity var(--motion-slow) var(--ease-out), transform var(--motion-slow) var(--ease-out);
 }
 .reveal.is-visible { opacity: 1; transform: none; }
+
+/* Small screens: the desktop scale (18px root) sets body text a size too
+   large once it's the only column on the page, and it makes headings wrap
+   awkwardly. Step the whole rem scale down instead of hand-tuning each rule. */
+@media (max-width: 600px) {
+  html { font-size: 16px; }
+  body { padding: 2.25rem 1.25rem 4rem; }
+  h1 { font-size: 1.55rem; }
+  .lesson-nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+  /* Status tag is floated top-right of the path-list item for the desktop
+     corner-badge look; on a narrow column the title text wraps around it
+     instead. Stack it above the title there. */
+  .path li .status-tag {
+    float: none;
+    display: inline-flex;
+    margin-bottom: 0.4rem;
+  }
+}
 
 /* Printing always uses a light, ink-conscious palette regardless of the
    on-screen theme — dark backgrounds waste toner and look broken on paper. */
