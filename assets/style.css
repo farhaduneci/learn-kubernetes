@@ -99,10 +99,12 @@ h1 {
   margin: 0 0 0.25rem;
 }
 
+/* Not display:flex: this paragraph is often plain text interrupted by an
+   inline <a> (breadcrumb link, then " · Section · Type"). A flex container
+   would split that surrounding text into separate anonymous flex items that
+   each wrap independently, breaking the sentence into ragged columns instead
+   of flowing normally — keep it as normal inline text flow. */
 .lesson-kicker {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
   font-size: 0.82rem;
   font-weight: 500;
   color: var(--muted);
@@ -166,14 +168,15 @@ blockquote {
   font-style: italic;
 }
 
+/* Not display:flex, for the same reason as .lesson-kicker above: citation
+   text is prose with one or two inline links stitched through it (and
+   sometimes a trailing icon inside the last link), so it must stay normal
+   inline flow rather than being split into independently-wrapping columns. */
 .citation {
   font-size: 0.82rem;
   color: var(--muted);
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
 }
-.citation .icon { width: 0.9em; height: 0.9em; flex: none; }
+.citation .icon { width: 0.9em; height: 0.9em; margin: 0 0.25rem; vertical-align: -0.13em; }
 
 .callout {
   background: var(--paper-raised);
