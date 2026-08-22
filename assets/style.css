@@ -1,71 +1,116 @@
-/* Shared stylesheet for the Kubernetes teaching workspace. Tufte-ish: generous
-   whitespace, serif prose, restrained color, sidenotes for citations. Dark mode by default. */
+/* Shared stylesheet template for teach workspaces. Scandinavian system: neutral
+   black/white ink ladder, one sans family (Inter, self-hosted), restrained
+   borders over boxes, quiet motion. Dark mode by default. */
 
-:root {
-  --ink: #e7e4dd;
-  --paper: #14171a;
-  --paper-raised: #1b1f23;
-  --muted: #9a9992;
-  --rule: #33383d;
-  --accent: #6fa8dc;
-  --accent-soft: #1c2b38;
-  --good: #6fbf73;
-  --bad: #e08076;
-  --code-bg: #1e2226;
-  --max-width: 680px;
+@font-face {
+  font-family: "InterVariable";
+  src: url("fonts/InterVariable.woff2") format("woff2-variations"), url("fonts/InterVariable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
 }
 
-/* Light theme override, toggled via <html data-theme="light">. Same warm,
-   off-white/off-black philosophy as the dark palette above — cream paper
-   and near-black ink rather than clinical white/black. */
+:root {
+  --font-sans: "InterVariable", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+
+  --ink: #ffffff;
+  --muted: rgb(255 255 255 / 56%);
+  --faint: rgb(255 255 255 / 36%);
+  --paper: #0a0a0a;
+  --paper-raised: #141414;
+  --rule: rgb(255 255 255 / 12%);
+  --rule-strong: rgb(255 255 255 / 18%);
+  --hover-fill: rgb(255 255 255 / 9%);
+  --pressed-fill: rgb(255 255 255 / 14%);
+  --accent: #7fb2e5;
+  --good: #5fc774;
+  --bad: #ef7a6d;
+  --code-bg: rgb(255 255 255 / 6%);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --max-width: 680px;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --motion-fast: 140ms;
+  --motion-base: 200ms;
+  --motion-slow: 320ms;
+}
+
+/* Light theme override, toggled via <html data-theme="light">. Neutral
+   black-on-white ladder — no warm/cool tint in the neutrals. */
 html[data-theme="light"] {
-  --ink: #2b2a26;
-  --paper: #faf8f3;
-  --paper-raised: #f1ece0;
-  --muted: #6b6860;
-  --rule: #ddd6c7;
+  --ink: #000000;
+  --muted: rgb(0 0 0 / 64%);
+  --faint: rgb(0 0 0 / 44%);
+  --paper: #ffffff;
+  --paper-raised: rgb(0 0 0 / 4%);
+  --rule: rgb(0 0 0 / 10%);
+  --rule-strong: rgb(0 0 0 / 18%);
+  --hover-fill: rgb(0 0 0 / 5%);
+  --pressed-fill: rgb(0 0 0 / 9%);
   --accent: #1a5c8a;
-  --accent-soft: #e4edf5;
-  --good: #2f7d34;
+  --good: #1f7d3c;
   --bad: #b23a2c;
-  --code-bg: #f0ebdb;
+  --code-bg: rgb(0 0 0 / 4%);
 }
 
 * { box-sizing: border-box; }
 
-html { font-size: 18px; }
+html {
+  font-size: 18px;
+  scroll-behavior: auto;
+}
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
 
 body {
   background: var(--paper);
   color: var(--ink);
-  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  font-family: var(--font-sans);
+  font-weight: 400;
   line-height: 1.55;
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 3rem 1.5rem 6rem;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition: background-color var(--motion-base) ease, color var(--motion-base) ease;
 }
 
 h1, h2, h3 {
-  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-sans);
   font-weight: 600;
   line-height: 1.25;
   color: var(--ink);
+  letter-spacing: -0.01em;
 }
 
 h1 {
   font-size: 1.9rem;
+  line-height: 1.12;
   margin: 0 0 0.25rem;
 }
 
 .lesson-kicker {
-  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.72rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 500;
   color: var(--muted);
   margin: 0 0 0.75rem;
 }
+.lesson-kicker a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--muted);
+  text-decoration: none;
+}
+.lesson-kicker a:hover { color: var(--ink); }
+.lesson-kicker .icon { width: 0.95em; height: 0.95em; }
 
 h2 {
   font-size: 1.25rem;
@@ -82,15 +127,19 @@ h3 {
 
 p { margin: 0.9rem 0; }
 
-a { color: var(--accent); text-decoration-thickness: 1px; }
+a {
+  color: var(--accent);
+  text-decoration-thickness: 1px;
+  transition: text-decoration-thickness var(--motion-fast) ease;
+}
 a:hover { text-decoration-thickness: 2px; }
 
 code, pre {
-  font-family: "SF Mono", Menlo, Consolas, monospace;
+  font-family: var(--font-mono);
   font-size: 0.85em;
   background: var(--code-bg);
   color: var(--ink);
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
 }
 
 code { padding: 0.1em 0.35em; }
@@ -112,28 +161,33 @@ blockquote {
 }
 
 .citation {
-  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
 }
+.citation .icon { width: 0.9em; height: 0.9em; flex: none; }
 
 .callout {
-  background: var(--accent-soft);
-  border-radius: 8px;
+  background: var(--paper-raised);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-md);
   padding: 0.9rem 1.1rem;
   margin: 1.25rem 0;
   font-size: 0.95rem;
 }
 
 .callout-title {
-  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
   font-weight: 600;
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  font-size: 0.82rem;
   color: var(--accent);
   margin-bottom: 0.35rem;
 }
+.callout-title .icon { width: 1em; height: 1em; }
 
 table {
   width: 100%;
@@ -148,32 +202,49 @@ th, td {
   vertical-align: top;
 }
 th {
-  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
+  font-size: 0.8rem;
+  font-weight: 500;
   color: var(--muted);
 }
 
 .lesson-nav {
   display: flex;
   justify-content: space-between;
-  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-  font-size: 0.85rem;
+  align-items: center;
+  font-size: 0.88rem;
+  font-weight: 500;
   margin-top: 3rem;
   padding-top: 1rem;
   border-top: 1px solid var(--rule);
   color: var(--muted);
 }
+.lesson-nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+.lesson-nav a:hover { color: var(--accent); }
+.lesson-nav .icon { width: 1em; height: 1em; }
+.lesson-nav .next {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
 
 .ask-agent {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
   margin-top: 3rem;
   padding: 1rem 1.1rem;
-  border: 1px dashed var(--rule);
-  border-radius: 8px;
+  border: 1px dashed var(--rule-strong);
+  border-radius: var(--radius-md);
   font-size: 0.9rem;
   color: var(--muted);
 }
+.ask-agent .icon { width: 1.1em; height: 1.1em; flex: none; margin-top: 0.15em; color: var(--faint); }
 
 hr.rule {
   border: none;
@@ -185,19 +256,20 @@ hr.rule {
 .toc {
   background: var(--paper-raised);
   border: 1px solid var(--rule);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   padding: 0.9rem 1.2rem;
   margin: 1.5rem 0 2rem;
 }
 .toc-title {
-  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-  font-weight: 600;
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 500;
+  font-size: 0.8rem;
   color: var(--muted);
   margin-bottom: 0.5rem;
 }
+.toc-title .icon { width: 1em; height: 1em; }
 .toc ol {
   margin: 0;
   padding-left: 1.2rem;
@@ -210,7 +282,7 @@ hr.rule {
 /* Quiz component: question box, text input, feedback */
 .quiz-item {
   border: 1px solid var(--rule);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   padding: 1rem 1.1rem;
   margin: 1rem 0;
 }
@@ -222,31 +294,48 @@ hr.rule {
   width: 100%;
   max-width: 320px;
   border: 1px solid var(--rule);
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   margin-bottom: 0.5rem;
   background: var(--code-bg);
   color: var(--ink);
+  transition: border-color var(--motion-fast) ease;
 }
-.quiz-input::placeholder { color: var(--muted); }
+.quiz-input::placeholder { color: var(--faint); }
 .quiz-input:focus {
-  outline: none;
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
   border-color: var(--accent);
 }
-.quiz-feedback { font-size: 0.88rem; min-height: 1.2em; margin-bottom: 0; }
+.quiz-feedback {
+  font-size: 0.88rem;
+  min-height: 1.2em;
+  margin-bottom: 0;
+  opacity: 0;
+  transform: translateY(-2px);
+  transition: opacity var(--motion-base) var(--ease-out), transform var(--motion-base) var(--ease-out);
+}
+.quiz-feedback.is-visible { opacity: 1; transform: none; }
 
 /* Generic buttons, used by quiz component and elsewhere */
 .btn {
-  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-sans);
   font-size: 0.82rem;
+  font-weight: 500;
   padding: 0.35rem 0.8rem;
-  border-radius: 5px;
+  border-radius: var(--radius-sm);
   border: 1px solid var(--rule);
   background: var(--code-bg);
   color: var(--ink);
   cursor: pointer;
   margin-right: 0.4rem;
+  transition: border-color var(--motion-fast) ease, background-color var(--motion-fast) ease, transform var(--motion-fast) var(--ease-out);
 }
-.btn:hover { border-color: var(--accent); }
+.btn .icon { width: 1em; height: 1em; }
+.btn:hover { border-color: var(--rule-strong); background: var(--hover-fill); }
+.btn:active { transform: scale(0.97); }
 
 /* Dark/light theme toggle button, fixed top-right on every page. */
 .theme-toggle {
@@ -259,15 +348,36 @@ hr.rule {
   border: 1px solid var(--rule);
   background: var(--paper-raised);
   color: var(--ink);
-  font-size: 1.05rem;
-  line-height: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   z-index: 10;
+  transition: border-color var(--motion-fast) ease, background-color var(--motion-fast) ease, transform var(--motion-fast) var(--ease-out);
 }
-.theme-toggle:hover { border-color: var(--accent); }
+.theme-toggle .icon { width: 1.05rem; height: 1.05rem; }
+.theme-toggle:hover { border-color: var(--rule-strong); background: var(--hover-fill); }
+.theme-toggle:active { transform: scale(0.94); }
+
+/* Icon sprite base: inherits text color, sized by its container. */
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  flex: none;
+  line-height: 0;
+}
+.icon svg { width: 100%; height: 100%; display: block; }
+
+/* Scroll-reveal used on index-style listing pages (lesson path, reference
+   list, hub track cards) — never on lesson prose, which users read once and
+   should never move for style. */
+.reveal {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity var(--motion-slow) var(--ease-out), transform var(--motion-slow) var(--ease-out);
+}
+.reveal.is-visible { opacity: 1; transform: none; }
 
 /* Printing always uses a light, ink-conscious palette regardless of the
    on-screen theme — dark backgrounds waste toner and look broken on paper. */
@@ -277,12 +387,27 @@ hr.rule {
     --paper: #ffffff;
     --paper-raised: #ffffff;
     --muted: #444444;
+    --faint: #666666;
     --rule: #cccccc;
     --accent: #1a5c8a;
-    --accent-soft: #ffffff;
-    --good: #2f7d34;
+    --good: #1f7d3c;
     --bad: #b23a2c;
     --code-bg: #f5f5f5;
   }
   .theme-toggle { display: none; }
+}
+
+/* Reduced motion: keep opacity/color feedback (Tier 3), drop movement and
+   smooth-scroll (Tier 1/2). Elements gated by .reveal/.quiz-feedback still
+   get their fade, just without translation and near-instantly. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal { transform: none; }
+  .quiz-feedback { transform: none; }
 }

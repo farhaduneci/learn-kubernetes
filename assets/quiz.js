@@ -28,8 +28,8 @@
       '<p class="quiz-q">' + question.q + "</p>" +
       '<input type="text" class="quiz-input" placeholder="Your answer" />' +
       '<div class="quiz-actions">' +
-      '<button class="quiz-check btn" type="button">Check</button>' +
-      '<button class="quiz-reveal btn" type="button">Reveal</button>' +
+      '<button class="quiz-check btn" type="button"><i class="icon" data-icon="check" aria-hidden="true"></i>Check</button>' +
+      '<button class="quiz-reveal btn" type="button"><i class="icon" data-icon="eye" aria-hidden="true"></i>Reveal</button>' +
       "</div>" +
       '<p class="quiz-feedback"></p>' +
       "</div>"
@@ -58,8 +58,12 @@
       const feedback = item.querySelector(".quiz-feedback");
 
       function setFeedback(text, ok) {
+        feedback.classList.remove("is-visible");
         feedback.textContent = text;
         feedback.style.color = ok ? "var(--good)" : "var(--bad)";
+        // Force reflow so re-adding the class retriggers the transition on repeat answers.
+        void feedback.offsetWidth;
+        feedback.classList.add("is-visible");
       }
 
       if (checkBtn) {
@@ -90,5 +94,6 @@
   document.addEventListener("DOMContentLoaded", function () {
     expandDataQuizzes(document);
     initQuiz(document);
+    if (window.Icons) window.Icons.hydrate(document);
   });
 })();

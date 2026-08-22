@@ -26,16 +26,17 @@
     padding: 0.9rem 1rem 0.9rem 3rem;
     margin-bottom: 0.6rem;
     border: 1px solid var(--rule);
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     background: var(--paper-raised);
+    transition: border-color var(--motion-fast) ease;
   }
+  .path li:hover { border-color: var(--rule-strong); }
   .path li::before {
     content: counter(step);
     position: absolute;
     left: 0.9rem;
     top: 50%;
     transform: translateY(-50%);
-    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
     font-weight: 600;
     font-size: 0.85rem;
     color: var(--accent);
@@ -61,27 +62,29 @@
     margin-top: 0.15rem;
   }
   .status-tag {
-    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-    font-size: 0.68rem;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.72rem;
+    font-weight: 500;
     color: var(--muted);
     float: right;
   }
+  .status-tag .icon { width: 0.95em; height: 0.95em; }
   ul.plain { padding-left: 1.2rem; }
   ul.plain li { margin: 0.35rem 0; }
 </style>
 </head>
 <body>
 
-<button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme">🌙</button>
+<button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme"><i class="icon" data-icon="moon" aria-hidden="true"></i></button>
 
 <p class="lesson-kicker">Teaching Workspace</p>
 <h1>Kubernetes Learning Path</h1>
 <p>Grounded in <a href="MISSION.md">MISSION.md</a>: get genuinely productive with Kubernetes, pass k8s interview questions, and work toward CKAD &mdash; using the official CKAD curriculum as the syllabus, practicing entirely on minikube and LocalStack.</p>
 
 <nav class="toc" data-toc>
-  <div class="toc-title">On this page</div>
+  <div class="toc-title"><i class="icon" data-icon="list-bullets" aria-hidden="true"></i>On this page</div>
 </nav>
 
 <h2 id="start-here">Start here</h2>
@@ -100,24 +103,28 @@
 </ul>
 
 <div class="ask-agent">
-  This page is regenerated as lessons are added. Ask your agent for the next lesson whenever you're ready to continue.
+  <i class="icon" data-icon="chat-circle-dots" aria-hidden="true"></i>
+  <span>This page is regenerated as lessons are added. Ask your agent for the next lesson whenever you're ready to continue.</span>
 </div>
 
+<script src="assets/icons.js"></script>
 <script src="assets/lessons-manifest.js"></script>
 <script>
   var STATUS_LABEL = { done: "Done", "in-progress": "In progress", next: "Next", upcoming: "Upcoming" };
   var STATUS_CLASS = { done: "done", "in-progress": "", next: "upcoming", upcoming: "upcoming" };
+  var STATUS_ICON = { done: "check-circle", "in-progress": "circle-dashed", next: "circle-dashed", upcoming: "circle-dashed" };
 
   function renderPath(lessons, mount) {
     mount.innerHTML = lessons.map(function (lesson) {
       var cls = STATUS_CLASS[lesson.status] || "";
       var label = STATUS_LABEL[lesson.status] || lesson.status;
+      var icon = STATUS_ICON[lesson.status] || "circle-dashed";
       var titleHtml = lesson.href
         ? '<a href="' + lesson.href + '">' + lesson.title + "</a>"
         : "<span>" + lesson.title + "</span>";
       return (
-        '<li class="' + cls + '">' +
-        '<span class="status-tag">' + label + "</span>" +
+        '<li class="reveal ' + cls + '">' +
+        '<span class="status-tag"><i class="icon" data-icon="' + icon + '" aria-hidden="true"></i>' + label + "</span>" +
         titleHtml +
         '<span class="desc">' + lesson.description + "</span>" +
         "</li>"
@@ -128,7 +135,7 @@
   function renderReferences(refs, mount) {
     mount.innerHTML = refs.map(function (ref) {
       return (
-        "<li>" +
+        '<li class="reveal">' +
         '<a href="' + ref.href + '">' + ref.title + "</a>" +
         " &mdash; " + ref.description +
         "</li>"
@@ -138,8 +145,10 @@
 
   renderPath(window.LESSONS, document.getElementById("lesson-path"));
   renderReferences(window.REFERENCES, document.getElementById("reference-list"));
+  if (window.Icons) window.Icons.hydrate(document);
 </script>
 <script src="assets/toc.js"></script>
 <script src="assets/theme.js"></script>
+<script src="assets/reveal.js"></script>
 </body>
 </html>
