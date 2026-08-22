@@ -5,10 +5,20 @@
 // "is-visible" as each one enters the viewport, with a small stagger.
 // Honors prefers-reduced-motion by revealing everything immediately.
 (function () {
-  function reveal(el, delay) {
-    setTimeout(function () {
-      el.classList.add("is-visible");
-    }, delay || 0);
+  // Elements that intersect the moment the observer attaches (anything
+  // already in the initial viewport) can have their "is-visible" class
+  // added before the browser has painted the opacity:0 starting frame —
+  // with no painted starting point to transition from, the change lands
+  // as an instant jump instead of a fade. Two rAFs guarantee a paint of
+  // the resting state happens first; the stagger delay rides on top via
+  // transition-delay so it doesn't reintroduce the same race.
+  function reveal(el, delayMs) {
+    el.style.transitionDelay = delayMs ? delayMs + "ms" : "";
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        el.classList.add("is-visible");
+      });
+    });
   }
 
   document.addEventListener("DOMContentLoaded", function () {
