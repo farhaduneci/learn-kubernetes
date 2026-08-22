@@ -402,7 +402,8 @@ hr.rule {
      instead. Stack it above the title there. */
   .path li .status-tag {
     float: none;
-    display: inline-flex;
+    display: flex;
+    width: fit-content;
     margin-bottom: 0.4rem;
   }
 }
