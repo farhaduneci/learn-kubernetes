@@ -1,7 +1,7 @@
 # Mission: Kubernetes
 
 ## Why
-Farhad wants to be genuinely productive with Kubernetes and pass k8s-related interview questions in backend, software, and AI role interviews. The learning is aimed at eventually earning the **CKAD (Certified Kubernetes Application Developer)** certification, using its objectives as the curriculum skeleton — whether or not the exam is ultimately sat.
+The goal is genuine, working Kubernetes proficiency — fluent enough to answer k8s-related interview questions for backend, software, and AI roles. Learning is aimed at the **CKAD (Certified Kubernetes Application Developer)** certification, using its objectives as the curriculum skeleton, whether or not the exam is ultimately sat.
 
 ## Success looks like
 - Can explain core k8s architecture and concepts fluently in an interview setting (pods, deployments, services, config, networking, storage, etc.)
